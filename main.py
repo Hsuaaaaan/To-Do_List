@@ -19,7 +19,8 @@ def show_menu():
     print("1. 查看待辦事項")
     print("2. 新增待辦事項")
     print("3. 刪除待辦事項")
-    print("4. 離開")
+    print("4. 切換完成狀態")
+    print("5. 離開")
 
 def show_todos():
     if not todo_list:
@@ -27,11 +28,12 @@ def show_todos():
         return 0
     else:
         for idx, item in enumerate(todo_list, 1):
-            print(f"{idx}. {item}")
+            status = "✔" if item["done"] else "✘"
+            print(f"{idx}. [{status}] {item['task']}")
 
 def add_todo():
     task = input("請輸入代辦事項：")
-    todo_list.append(task)
+    todo_list.append({"task" : task, "done" : False})
     print("新增完成")
 
 def delete_todo():
@@ -42,6 +44,19 @@ def delete_todo():
         if 0 <= index < len(todo_list):
             removed = todo_list.pop(index)
             print(f"已刪除：{removed}")
+        else:
+            print("無效編號")
+    except ValueError:
+        print("請輸入正確數字")
+
+def toggle_status():
+    if show_todos() == 0:
+        return
+    try:
+        index = int(input("請輸入要切換狀態的編號：")) - 1
+        if 0 <= index < len(todo_list):
+            todo_list[index]["done"] = not todo_list[index]["done"]
+            print("狀態已切換")
         else:
             print("無效編號")
     except ValueError:
@@ -59,6 +74,8 @@ while True:
     elif choice == "3":
         delete_todo()
     elif choice == "4":
+        toggle_status()
+    elif choice == "5":
         save_to_json()
         print("Bye~")
         break
