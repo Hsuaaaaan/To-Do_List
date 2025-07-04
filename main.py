@@ -1,15 +1,16 @@
 todo_list = []
 
-def save_to_file():
-    with open("todo.txt", "w", encoding="utf-8") as f:
-        for item in todo_list:
-            f.write(item + "\n")
+import json
 
-def load_from_file():
+def save_to_json():
+    with open("todo.json", "w", encoding="utf-8") as f:
+        json.dump(todo_list, f, ensure_ascii=False, indent=2)
+
+def load_from_json():
+    global todo_list
     try:
-        with open("todo.txt", "r", encoding="utf-8") as f:
-            for line in f:
-                todo_list.append(line.strip())
+        with open("todo.json", "r", encoding="utf-8") as f:
+            todo_list = json.load(f)
     except FileNotFoundError:
         pass
 
@@ -23,6 +24,7 @@ def show_menu():
 def show_todos():
     if not todo_list:
         print("目前沒有代辦事項")
+        return 0
     else:
         for idx, item in enumerate(todo_list, 1):
             print(f"{idx}. {item}")
@@ -33,7 +35,8 @@ def add_todo():
     print("新增完成")
 
 def delete_todo():
-    show_todos()
+    if show_todos() == 0:
+        return
     try:
         index = int(input("請輸入要刪除的編號：")) - 1
         if 0 <= index < len(todo_list):
@@ -44,7 +47,7 @@ def delete_todo():
     except ValueError:
         print("請輸入正確數字")
 
-load_from_file()
+load_from_json()
 
 while True:
     show_menu()
@@ -56,7 +59,7 @@ while True:
     elif choice == "3":
         delete_todo()
     elif choice == "4":
-        save_to_file()
+        save_to_json()
         print("Bye~")
         break
     else:
