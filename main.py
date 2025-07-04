@@ -1,5 +1,18 @@
 todo_list = []
 
+def save_to_file():
+    with open("todo.txt", "w", encoding="utf-8") as f:
+        for item in todo_list:
+            f.write(item + "\n")
+
+def load_from_file():
+    try:
+        with open("todo.txt", "r", encoding="utf-8") as f:
+            for line in f:
+                todo_list.append(line.strip())
+    except FileNotFoundError:
+        pass
+
 def show_menu():
     print("\n--- To-Do List ---")
     print("1. 查看待辦事項")
@@ -31,9 +44,11 @@ def delete_todo():
     except ValueError:
         print("請輸入正確數字")
 
+load_from_file()
+
 while True:
     show_menu()
-    print(choice)
+    choice = input("請選擇功能：")
     if choice == "1":
         show_todos()
     elif choice == "2":
@@ -41,6 +56,7 @@ while True:
     elif choice == "3":
         delete_todo()
     elif choice == "4":
+        save_to_file()
         print("Bye~")
         break
     else:
