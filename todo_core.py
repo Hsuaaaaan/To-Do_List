@@ -62,22 +62,23 @@ def toggle_status():
     except ValueError:
         print("請輸入正確數字")
 
-load_from_json()
+if __name__ == "__main__":
+    load_from_json()
 
-while True:
-    show_menu()
-    choice = input("請選擇功能：")
-    if choice == "1":
-        show_todos()
-    elif choice == "2":
-        add_todo()
-    elif choice == "3":
-        delete_todo()
-    elif choice == "4":
-        toggle_status()
-    elif choice == "5":
-        save_to_json()
-        print("Bye~")
-        break
-    else:
-        print("請輸入正確選項！")
+    while True:
+        show_menu()
+        choice = input("請選擇功能：")
+        if choice == "1":
+            show_todos()
+        elif choice == "2":
+            add_todo()
+        elif choice == "3":
+            delete_todo()
+        elif choice == "4":
+            toggle_status()
+        elif choice == "5":
+            save_to_json()
+            print("Bye~")
+            break
+        else:
+            print("請輸入正確選項！")
